@@ -2,16 +2,32 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
-import reportWebVitals from './reportWebVitals';
 
-ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
-  document.getElementById('root')
-);
+const cities = [
+  { name: 'Moscow', timeZoneOffset: 3 },
+  { name: 'Ekaterinburg', timeZoneOffset: 5 },
+  { name: 'Omsk', timeZoneOffset: 6 }
+];
 
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();
+const formatDate = (offset) => {
+  const now = new Date().getTime();
+  const localDate = new Date(now + (offset - 3) * 3600 * 1000);
+
+  return localDate.toLocaleString();
+};
+
+const render = () => {
+  const ListItem = <li style={{ listStyle: 'none' }}></li>;
+  const Element = <ul style={{ margin: 'auto', padding: 0 }}>
+    {cities.map(city => {
+      return React.cloneElement(ListItem, null, `${city.name}: ${formatDate(city.timeZoneOffset)}`);
+    })}
+  </ul>;
+
+  ReactDOM.render(
+    <div style={{ display: 'flex', height: '100vh' }}>{Element}</div>,
+    document.getElementById('root')
+  );
+};
+
+setInterval(render, 1000);
